@@ -29,7 +29,7 @@ function App() {
       setShortUrl("");
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/url/shorten",
+        "https://linkzen-backend-2.onrender.com/api/v1/url/shorten",
         {
           method: "POST",
 
