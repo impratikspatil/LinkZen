@@ -32,7 +32,12 @@ function Login() {
       localStorage.setItem(
         "isLoggedIn",
         "true"
-      );
+        );
+
+        localStorage.setItem(
+        "userEmail",
+        email
+        );
 
       navigate("/");
 
