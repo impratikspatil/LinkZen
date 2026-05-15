@@ -4,6 +4,7 @@ import FeaturesSection from "../components/FeaturesSection";
 import DashboardPreview from "../components/DashboardPreview";
 import Dashboard from "./Dashboard";
 import RecentLinksTable from "../components/RecentLinksTable";
+import RecentLinksTablePreview from "../components/RecentLinksTablePreview";
 import Footer from "../components/Footer";
 
 function Home() {
@@ -25,7 +26,8 @@ function Home() {
 
       <Dashboard />
 
-      <RecentLinksTable />
+      {/* <RecentLinksTable /> */}
+      <RecentLinksTablePreview />
 
       <Footer />
 

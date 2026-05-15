@@ -1,4 +1,29 @@
+import { useEffect, useState } from "react";
+import { getAllUrls } from "../services/urlService";
+
 function RecentLinksTable() {
+
+  const [recentLinks, setRecentLinks] = useState([]);
+
+  useEffect(() => {
+
+    const fetchUrls = async () => {
+
+      try {
+
+        const data = await getAllUrls();
+
+        setRecentLinks(data);
+
+      } catch (error) {
+
+        console.error(error);
+      }
+    };
+
+    fetchUrls();
+
+  }, []);
 
   return (
 
@@ -46,45 +71,74 @@ function RecentLinksTable() {
 
           <tbody>
 
-            <tr className="border-b border-white/5">
+            {
+              recentLinks.length === 0 ? (
 
-              <td className="p-6 text-blue-400">
-                linkzen.app/tech
-              </td>
+                <tr>
 
-              <td className="p-6 text-gray-400">
-                youtube.com/watch?v=123
-              </td>
+                  <td
+                    colSpan="4"
+                    className="p-10 text-center text-gray-400"
+                  >
+                    No URLs Created Yet
+                  </td>
 
-              <td className="p-6">
-                1240
-              </td>
+                </tr>
 
-              <td className="p-6 text-green-400">
-                Active
-              </td>
+              ) : (
 
-            </tr>
+                recentLinks.map((link, index) => (
 
-            <tr>
+                  <tr
+                    key={index}
+                    className="border-b border-white/5"
+                  >
 
-              <td className="p-6 text-blue-400">
-                linkzen.app/dev
-              </td>
+                    <td className="p-6 text-blue-400">
 
-              <td className="p-6 text-gray-400">
-                github.com/project
-              </td>
+                      <a
+                        href={`https://linkzen-backend-2.onrender.com/${link.shortCode}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        {link.shortCode}
+                      </a>
 
-              <td className="p-6">
-                832
-              </td>
+                    </td>
 
-              <td className="p-6 text-yellow-400">
-                Expiring Soon
-              </td>
+                    <td className="p-6 text-gray-400">
 
-            </tr>
+                      {link.originalUrl}
+
+                    </td>
+
+                    <td className="p-6">
+
+                      {link.clickCount || 0}
+
+                    </td>
+
+                    <td
+                      className={`p-6 ${
+                        link.expired
+                          ? "text-yellow-400"
+                          : "text-green-400"
+                      }`}
+                    >
+
+                      {
+                        link.expired
+                          ? "Expired"
+                          : "Active"
+                      }
+
+                    </td>
+
+                  </tr>
+                ))
+              )
+            }
 
           </tbody>
 

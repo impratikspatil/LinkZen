@@ -1,7 +1,50 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import Navbar from "../components/Navbar";
 
+import { signupUser } from "../services/authService";
+
 function Signup() {
+
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+
+  const [email, setEmail] = useState("");
+
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async () => {
+
+    try {
+
+      setLoading(true);
+
+      const data = await signupUser({
+        name,
+        email,
+        password,
+      });
+
+      toast.success(data.message);
+
+      navigate("/login");
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(error.message);
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
 
   return (
 
@@ -40,6 +83,10 @@ function Signup() {
               <input
                 type="text"
                 placeholder="Enter your full name"
+                value={name}
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
                 className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
               />
 
@@ -54,6 +101,10 @@ function Signup() {
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
                 className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
               />
 
@@ -68,14 +119,26 @@ function Signup() {
               <input
                 type="password"
                 placeholder="Create password"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
                 className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
               />
 
             </div>
 
-            <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 py-4 rounded-2xl font-semibold hover:opacity-90 transition">
+            <button
+              onClick={handleSignup}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 py-4 rounded-2xl font-semibold hover:opacity-90 transition disabled:opacity-50"
+            >
 
-              Create Account
+              {
+                loading
+                  ? "Creating Account..."
+                  : "Create Account"
+              }
 
             </button>
 
