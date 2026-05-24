@@ -30,16 +30,16 @@ function Login() {
       toast.success(data.message);
 
       localStorage.setItem(
-        "isLoggedIn",
-        "true"
-        );
+        "token",
+        data.token
+      );
 
         localStorage.setItem(
         "userEmail",
         email
         );
 
-      navigate("/");
+      window.location.href = "/";
 
     } catch (error) {
 
