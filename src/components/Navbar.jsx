@@ -12,15 +12,12 @@ function Navbar() {
 
   const handleLogout = () => {
 
+  localStorage.removeItem("userEmail");
 
-    localStorage.removeItem("userEmail");
+  localStorage.removeItem("token");
 
-    localStorage.removeItem("token");
-
-    navigate("/");
-
-    window.location.reload();
-  };
+  window.location.href = "/";
+};
 
   return (
 
