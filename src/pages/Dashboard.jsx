@@ -730,15 +730,23 @@ function Dashboard() {
               </p>
 
               <input
-                type="number"
-                min="1"
-                placeholder="Enter expiry days"
-                value={expiryDays}
-                onChange={(e) =>
-                  setExpiryDays(e.target.value)
-                }
-                className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500 mb-8"
-              />
+                    type="number"
+                    minx="1"
+                    placeholder="Enter expiry days"
+                    value={expiryDays}
+                    onChange={(e) => {
+
+                      const value = e.target.value;
+
+                      if (value < 0) {
+
+                        return;
+                      }
+
+                      setExpiryDays(value);
+                    }}
+                    className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500 mb-8"
+                  />
 
               <div className="flex justify-end gap-4">
 
