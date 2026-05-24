@@ -84,3 +84,71 @@ export const getAllUrls = async () => {
 
   return data;
 };
+
+export const deleteUrl = async (
+  shortCode
+) => {
+
+  const token =
+    localStorage.getItem("token");
+
+  const response = await fetch(
+    `${BASE_URL}/${shortCode}`,
+    {
+      method: "DELETE",
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Failed to delete URL"
+    );
+  }
+
+  return await response.text();
+};
+
+export const updateExpiry = async (
+  shortCode,
+  expiryInDays
+) => {
+
+  const token =
+    localStorage.getItem("token");
+
+  const response = await fetch(
+    `${BASE_URL}/${shortCode}/expiry`,
+    {
+      method: "PUT",
+
+      headers: {
+        "Content-Type":
+          "application/json",
+
+        Authorization:
+          `Bearer ${token}`,
+      },
+
+      body: JSON.stringify({
+        expiryInDays,
+      }),
+    }
+  );
+
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Failed to update expiry"
+    );
+  }
+
+  return data;
+};
