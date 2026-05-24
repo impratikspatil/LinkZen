@@ -32,27 +32,35 @@ function Dashboard() {
 
   useEffect(() => {
 
-    const fetchUrls = async () => {
+  const fetchUrls = async () => {
 
-      try {
+    try {
 
-        const data = await getAllUrls();
+      const data = await getAllUrls();
 
-        setRecentLinks(data);
+      setRecentLinks(data);
 
-      } catch (error) {
+    } catch (error) {
 
-        console.error(error);
+      console.error(error);
 
-      } finally {
+    } finally {
 
-        setLoading(false);
-      }
-    };
+      setLoading(false);
+    }
+  };
+
+  fetchUrls();
+
+  const interval = setInterval(() => {
 
     fetchUrls();
 
-  }, []);
+  }, 5000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   if (loading) {
 
@@ -628,7 +636,7 @@ const handleUpdateExpiry = async () => {
                   onClick={() =>
                     setShowDeleteModal(false)
                   }
-                  className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition font-semibold"
+                  className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition font-semibold cursor-pointer"
                 >
 
                   Cancel
@@ -637,7 +645,7 @@ const handleUpdateExpiry = async () => {
 
                 <button
                     onClick={handleDeleteUrl}
-                    className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition font-semibold"
+                    className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition font-semibold cursor-pointer"
                   >
 
                     Delete
@@ -692,7 +700,7 @@ const handleUpdateExpiry = async () => {
                   onClick={() =>
                     setShowEditModal(false)
                   }
-                  className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition"
+                  className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition font-semibold cursor-pointer"
                 >
 
                   Cancel
@@ -701,7 +709,7 @@ const handleUpdateExpiry = async () => {
 
                 <button
                 onClick={handleUpdateExpiry}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 transition font-semibold"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 transition font-semibold cursor-pointer"
                 >
 
                   Save
