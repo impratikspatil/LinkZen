@@ -8,15 +8,18 @@ import {
 import {
   Pencil,
   Trash2,
+  QrCode,
 } from "lucide-react";
 
 import toast from "react-hot-toast";
 
 function Dashboard() {
 
-  const [recentLinks, setRecentLinks] = useState([]);
+  const [recentLinks, setRecentLinks] =
+    useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   const [showDeleteModal, setShowDeleteModal] =
     useState(false);
@@ -30,37 +33,43 @@ function Dashboard() {
   const [expiryDays, setExpiryDays] =
     useState("");
 
+  const [showQrModal, setShowQrModal] =
+    useState(false);
+
+  const [qrCodeUrl, setQrCodeUrl] =
+    useState("");
+
   useEffect(() => {
 
-  const fetchUrls = async () => {
+    const fetchUrls = async () => {
 
-    try {
+      try {
 
-      const data = await getAllUrls();
+        const data = await getAllUrls();
 
-      setRecentLinks(data);
+        setRecentLinks(data);
 
-    } catch (error) {
+      } catch (error) {
 
-      console.error(error);
+        console.error(error);
 
-    } finally {
+      } finally {
 
-      setLoading(false);
-    }
-  };
-
-  fetchUrls();
-
-  const interval = setInterval(() => {
+        setLoading(false);
+      }
+    };
 
     fetchUrls();
 
-  }, 5000);
+    const interval = setInterval(() => {
 
-  return () => clearInterval(interval);
+      fetchUrls();
 
-}, []);
+    }, 5000);
+
+    return () => clearInterval(interval);
+
+  }, []);
 
   if (loading) {
 
@@ -113,80 +122,83 @@ function Dashboard() {
       : Math.round(
           (searchTraffic / totalTraffic) * 100
         );
-      
+
   const handleDeleteUrl = async () => {
 
-  try {
+    try {
 
-    await deleteUrl(
-      selectedLink.shortCode
-    );
-
-    setRecentLinks((prev) =>
-      prev.filter(
-        (link) =>
-          link.shortCode !==
-          selectedLink.shortCode
-      )
-    );
-
-    setShowDeleteModal(false);
-
-    toast.success(
-      "URL deleted successfully"
-    );
-
-  } catch (error) {
-
-    console.error(error);
-
-    toast.error(error.message);
-  }
-};
-
-const handleUpdateExpiry = async () => {
-
-  if (!expiryDays || Number(expiryDays) <= 0) {
-
-  toast.error(
-    "Expiry days must be greater than 0"
-  );
-
-  return;
-}
-
-  try {
-
-    const updatedUrl =
-      await updateExpiry(
-        selectedLink.shortCode,
-        Number(expiryDays)
+      await deleteUrl(
+        selectedLink.shortCode
       );
 
-    setRecentLinks((prev) =>
-      prev.map((link) =>
+      setRecentLinks((prev) =>
+        prev.filter(
+          (link) =>
+            link.shortCode !==
+            selectedLink.shortCode
+        )
+      );
 
-        link.shortCode ===
-        updatedUrl.shortCode
+      setShowDeleteModal(false);
 
-          ? updatedUrl
-          : link
-      )
-    );
+      toast.success(
+        "URL deleted successfully"
+      );
 
-    setShowEditModal(false);
+    } catch (error) {
 
-    toast.success(
-      "Expiry updated successfully"
-    );
+      console.error(error);
 
-  } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    console.error(error);
+  const handleUpdateExpiry = async () => {
 
-    toast.error(error.message);
-  }
-};
+    if (
+      !expiryDays ||
+      Number(expiryDays) <= 0
+    ) {
+
+      toast.error(
+        "Expiry days must be greater than 0"
+      );
+
+      return;
+    }
+
+    try {
+
+      const updatedUrl =
+        await updateExpiry(
+          selectedLink.shortCode,
+          Number(expiryDays)
+        );
+
+      setRecentLinks((prev) =>
+        prev.map((link) =>
+
+          link.shortCode ===
+          updatedUrl.shortCode
+
+            ? updatedUrl
+            : link
+        )
+      );
+
+      setShowEditModal(false);
+
+      toast.success(
+        "Expiry updated successfully"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(error.message);
+    }
+  };
 
   return (
 
@@ -221,7 +233,7 @@ const handleUpdateExpiry = async () => {
                   behavior: "smooth",
                 });
             }}
-            className="mt-6 md:mt-0 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition"
+            className="mt-6 md:mt-0 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition cursor-pointer"
           >
 
             Create New Link
@@ -251,13 +263,7 @@ const handleUpdateExpiry = async () => {
             </p>
 
             <h2 className="text-5xl font-bold">
-              {
-                recentLinks.reduce(
-                  (total, link) =>
-                    total + (link.clickCount || 0),
-                  0
-                )
-              }
+              {totalTraffic}
             </h2>
 
           </div>
@@ -297,8 +303,6 @@ const handleUpdateExpiry = async () => {
         </div>
 
         <div className="flex flex-col gap-8 mb-14">
-
-          {/* Recent URLs Section */}
 
           <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
 
@@ -454,7 +458,7 @@ const handleUpdateExpiry = async () => {
 
                           </td>
 
-                          <td className="py-5 w-[100px]">
+                          <td className="py-5 w-[140px]">
 
                             <div className="flex items-center gap-4">
 
@@ -472,6 +476,25 @@ const handleUpdateExpiry = async () => {
                               >
 
                                 <Pencil size={18} />
+
+                              </button>
+
+                              <button
+                                title="QR Code"
+                                className="text-purple-400 hover:text-purple-300 transition cursor-pointer"
+                                onClick={() => {
+
+                                  setSelectedLink(link);
+
+                                  setQrCodeUrl(
+                                    `https://linkzen-backend-2.onrender.com/api/v1/url/qr/${link.shortCode}`
+                                  );
+
+                                  setShowQrModal(true);
+                                }}
+                              >
+
+                                <QrCode size={18} />
 
                               </button>
 
@@ -505,8 +528,6 @@ const handleUpdateExpiry = async () => {
             </div>
 
           </div>
-
-          {/* Traffic Sources Section */}
 
           <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
 
@@ -644,13 +665,13 @@ const handleUpdateExpiry = async () => {
                 </button>
 
                 <button
-                    onClick={handleDeleteUrl}
-                    className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition font-semibold cursor-pointer"
-                  >
+                  onClick={handleDeleteUrl}
+                  className="px-5 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition font-semibold cursor-pointer"
+                >
 
-                    Delete
+                  Delete
 
-                  </button>
+                </button>
 
               </div>
 
@@ -708,11 +729,71 @@ const handleUpdateExpiry = async () => {
                 </button>
 
                 <button
-                onClick={handleUpdateExpiry}
+                  onClick={handleUpdateExpiry}
                   className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 transition font-semibold cursor-pointer"
                 >
 
                   Save
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )
+      }
+
+      {
+        showQrModal && (
+
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+
+            <div className="bg-[#111827] border border-white/10 rounded-3xl p-8 w-[90%] max-w-md text-center">
+
+              <h2 className="text-2xl font-bold mb-4">
+                QR Code
+              </h2>
+
+              <p className="text-gray-400 mb-6">
+
+                Scan QR for
+
+                <span className="text-white font-semibold">
+
+                  {" "} {selectedLink?.shortCode}
+
+                </span>
+
+              </p>
+
+              <img
+                src={qrCodeUrl}
+                alt="QR Code"
+                className="w-64 h-64 mx-auto rounded-2xl bg-white p-4"
+              />
+
+              <div className="flex justify-center gap-4 mt-8">
+
+                <a
+                  href={qrCodeUrl}
+                  download
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 font-semibold cursor-pointer"
+                >
+
+                  Download
+
+                </a>
+
+                <button
+                  onClick={() =>
+                    setShowQrModal(false)
+                  }
+                  className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition cursor-pointer"
+                >
+
+                  Close
 
                 </button>
 
