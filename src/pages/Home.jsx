@@ -24,10 +24,14 @@ function Home() {
 
       <FeaturesSection />
 
-      <Dashboard />
+          {
+        localStorage.getItem("token") && (
+          <Dashboard />
+        )
+      }
 
       {/* <RecentLinksTable /> */}
-      <RecentLinksTablePreview />
+      {/* <RecentLinksTablePreview /> */}
 
       <Footer />
 
