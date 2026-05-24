@@ -9,6 +9,7 @@ import {
   Pencil,
   Trash2,
   QrCode,
+  Share2
 } from "lucide-react";
 
 import toast from "react-hot-toast";
@@ -70,6 +71,30 @@ function Dashboard() {
     return () => clearInterval(interval);
 
   }, []);
+
+  const handleShareQr = async () => {
+
+    try {
+
+      await navigator.share({
+
+        title: "LinkZen QR Code",
+
+        text:
+
+          `QR Code for ${selectedLink.shortCode}`,
+
+        url: qrCodeUrl,
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  };
 
   if (loading) {
 
@@ -776,16 +801,20 @@ function Dashboard() {
 
               <div className="flex justify-center gap-4 mt-8">
 
-                <a
-                  href={qrCodeUrl}
-                  download
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 font-semibold cursor-pointer"
+
+              <button
+
+                  onClick={handleShareQr}
+
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 font-semibold cursor-pointer"
+
                 >
 
-                  Download
+                  <Share2 size={18} />
 
-                </a>
+                  Share
 
+                </button>
                 <button
                   onClick={() =>
                     setShowQrModal(false)
