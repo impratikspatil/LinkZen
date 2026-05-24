@@ -1,44 +1,75 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+
 import { createShortUrl } from "../services/urlService";
 
 function UrlFormCard() {
 
   const [originalUrl, setOriginalUrl] = useState("");
+
   const [customAlias, setCustomAlias] = useState("");
+
   const [expiryInDays, setExpiryInDays] = useState("");
+
   const [shortUrl, setShortUrl] = useState("");
+
   const [loading, setLoading] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleShortenUrl = async () => {
 
     try {
 
+      const token =
+        localStorage.getItem("token");
+
+      /*
+       * Redirect to login
+       * if user is not authenticated
+       */
+      if (!token) {
+
+        toast.error(
+          "Please login to create short links"
+        );
+
+        window.location.href = "/login";
+
+        return;
+      }
+
       setLoading(true);
+
       setErrorMessage("");
+
       setShortUrl("");
 
       const data = await createShortUrl({
-          originalUrl,
-          customAlias,
-          expiryInDays:
-            expiryInDays === ""
-              ? null
-              : Number(expiryInDays),
-        });
 
-    
+        originalUrl,
 
-      
+        customAlias,
+
+        expiryInDays:
+          expiryInDays === ""
+            ? null
+            : Number(expiryInDays),
+
+      });
 
       setShortUrl(data.shortUrl);
+
+      toast.success(
+        "Short URL created successfully!"
+      );
 
     } catch (error) {
 
       console.error(error);
 
       setErrorMessage(error.message);
+
       toast.error(error.message);
 
     } finally {
@@ -55,7 +86,9 @@ function UrlFormCard() {
         shortUrl
       );
 
-      toast.success("Copied to clipboard!");
+      toast.success(
+        "Copied to clipboard!"
+      );
 
     } catch (error) {
 
@@ -88,7 +121,9 @@ function UrlFormCard() {
             placeholder="https://example.com"
             value={originalUrl}
             onChange={(e) =>
-              setOriginalUrl(e.target.value)
+              setOriginalUrl(
+                e.target.value
+              )
             }
             className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
           />
@@ -108,7 +143,9 @@ function UrlFormCard() {
               placeholder="my-link"
               value={customAlias}
               onChange={(e) =>
-                setCustomAlias(e.target.value)
+                setCustomAlias(
+                  e.target.value
+                )
               }
               className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
             />
@@ -126,7 +163,9 @@ function UrlFormCard() {
               placeholder="7"
               value={expiryInDays}
               onChange={(e) =>
-                setExpiryInDays(e.target.value)
+                setExpiryInDays(
+                  e.target.value
+                )
               }
               className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
             />
@@ -135,14 +174,13 @@ function UrlFormCard() {
 
         </div>
 
-       
-
         <button
           onClick={(e) => {
 
             e.preventDefault();
 
             handleShortenUrl();
+
           }}
           disabled={loading}
           className="w-full bg-gradient-to-r from-purple-500 to-blue-500 py-4 rounded-2xl font-semibold hover:opacity-90 transition disabled:opacity-50"
@@ -170,6 +208,7 @@ function UrlFormCard() {
                 <a
                   href={shortUrl}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="text-blue-400 break-all"
                 >
                   {shortUrl}
@@ -185,6 +224,17 @@ function UrlFormCard() {
               </div>
 
             </div>
+          )
+        }
+
+        {
+          errorMessage && (
+
+            <p className="text-red-400 text-sm">
+
+              {errorMessage}
+
+            </p>
           )
         }
 
