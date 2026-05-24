@@ -9,12 +9,18 @@ import {
   Pencil,
   Trash2,
   QrCode,
-  Share2
+  Share2,
+  ArrowUpRight
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+
 
 import toast from "react-hot-toast";
 
 function Dashboard() {
+
+  const navigate = useNavigate();
 
   const [recentLinks, setRecentLinks] =
     useState([]);
@@ -227,8 +233,8 @@ function Dashboard() {
 
   return (
 
-    <div className="relative">
-
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+     
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500 opacity-20 blur-3xl rounded-full"></div>
 
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-500 opacity-20 blur-3xl rounded-full"></div>
@@ -243,9 +249,34 @@ function Dashboard() {
               Welcome Back 👋
             </p>
 
-            <h1 className="text-5xl font-bold">
-              Analytics Dashboard
-            </h1>
+            <div className="flex items-center gap-4">
+
+  <h1 className="text-5xl font-bold">
+    Analytics Dashboard
+  </h1>
+
+  <button
+    className="group flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition cursor-pointer"
+  >
+
+    <button
+  onClick={() => navigate("/analytics")}
+  className="group flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition cursor-pointer"
+>
+    Go To Analytics
+
+  <ArrowUpRight
+    size={18}
+    className="group-hover:translate-x-1 group-hover:-translate-y-1 transition"
+  />
+
+</button>
+
+
+
+  </button>
+
+</div>
 
           </div>
 
@@ -731,17 +762,17 @@ function Dashboard() {
 
               <input
                     type="number"
-                    minx="1"
+                    min="1"
                     placeholder="Enter expiry days"
                     value={expiryDays}
                     onChange={(e) => {
 
                       const value = e.target.value;
 
-                      if (value < 0) {
+                      if (Number(value) < 0) {
+                            return;
 
-                        return;
-                      }
+                          }
 
                       setExpiryDays(value);
                     }}

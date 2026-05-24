@@ -5,6 +5,9 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Architecture from "./pages/Architecture";
+import AnalyticsPage from "./pages/AnalyticsPage.jsx";
+import UrlAnalyticsPage from "./pages/UrlAnalyticsPage";
+
 
 function App() {
 
@@ -38,6 +41,17 @@ function App() {
           path="/architecture"
           element={<Architecture />}
         />
+
+
+        <Route
+          path="/analytics"
+          element={<AnalyticsPage />}
+        />
+
+        <Route
+          path="/analytics/:shortCode"
+          element={<UrlAnalyticsPage />}
+/>
 
       </Routes>
 
