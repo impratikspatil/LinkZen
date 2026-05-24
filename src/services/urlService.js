@@ -3,6 +3,9 @@ const BASE_URL =
 
 export const createShortUrl = async (payload) => {
 
+  const token =
+    localStorage.getItem("token");
+
   const response = await fetch(
     `${BASE_URL}/shorten`,
     {
@@ -10,6 +13,7 @@ export const createShortUrl = async (payload) => {
 
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
 
       body: JSON.stringify(payload),
@@ -31,8 +35,16 @@ export const createShortUrl = async (payload) => {
 
 export const getUrlStats = async (shortCode) => {
 
+  const token =
+    localStorage.getItem("token");
+
   const response = await fetch(
-    `${BASE_URL}/stats/${shortCode}`
+    `${BASE_URL}/stats/${shortCode}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
 
   const data = await response.json();
@@ -49,8 +61,16 @@ export const getUrlStats = async (shortCode) => {
 
 export const getAllUrls = async () => {
 
+  const token =
+    localStorage.getItem("token");
+
   const response = await fetch(
-    `${BASE_URL}/all`
+    `${BASE_URL}/all`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
 
   const data = await response.json();
