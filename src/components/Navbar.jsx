@@ -1,86 +1,88 @@
-const BASE_URL =
-  "https://linkzen-backend-2.onrender.com/api/v1/url";
+import { Link } from "react-router-dom";
 
-export const createShortUrl = async (payload) => {
+function Navbar() {
 
-  const token =
-    localStorage.getItem("token");
 
-  const response = await fetch(
-    `${BASE_URL}/shorten`,
-    {
-      method: "POST",
+  const token = localStorage.getItem("token");
 
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+  const isLoggedIn = !!token;
 
-      body: JSON.stringify(payload),
-    }
+  const userEmail =
+    localStorage.getItem("userEmail");
+
+  const handleLogout = () => {
+
+
+    localStorage.removeItem("userEmail");
+
+    localStorage.removeItem("token");
+
+    navigate("/");
+
+    window.location.reload();
+  };
+
+  return (
+
+    <nav className="relative z-10 flex items-center justify-between px-8 py-6 border-b border-white/10">
+
+      <Link
+        to="/"
+        className="text-3xl font-bold tracking-wide"
+      >
+        LinkZen
+      </Link>
+
+      <div className="flex items-center gap-4">
+
+        <Link
+          to="/architecture"
+          className="text-gray-300 hover:text-white transition"
+        >
+          Architecture
+        </Link>
+
+        {
+
+          isLoggedIn ? (
+
+            <>
+             <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center font-bold">
+              {userEmail.charAt(0).toUpperCase()}
+            </div>
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
+              >
+                Logout
+              </button>
+            </>
+
+          ) : (
+
+            <>
+              <Link
+                to="/login"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/signup"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
+              >
+                Signup
+              </Link>
+            </>
+          )
+        }
+
+      </div>
+
+    </nav>
   );
+}
 
-  const data = await response.json();
-
-  if (!response.ok) {
-
-    const firstError =
-      Object.values(data)[0];
-
-    throw new Error(firstError);
-  }
-
-  return data;
-};
-
-export const getUrlStats = async (shortCode) => {
-
-  const token =
-    localStorage.getItem("token");
-
-  const response = await fetch(
-    `${BASE_URL}/stats/${shortCode}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-
-    throw new Error(
-      "Failed to fetch stats"
-    );
-  }
-
-  return data;
-};
-
-export const getAllUrls = async () => {
-
-  const token =
-    localStorage.getItem("token");
-
-  const response = await fetch(
-    `${BASE_URL}/all`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-
-    throw new Error(
-      "Failed to fetch URLs"
-    );
-  }
-
-  return data;
-};
+export default Navbar;
