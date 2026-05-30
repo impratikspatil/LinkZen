@@ -43,12 +43,11 @@ function ClickChart({ data }) {
                 >
 
                   <div
-                    className="w-full bg-gradient-to-t from-purple-500 to-blue-500 rounded-t-xl"
-                    style={{
-                      height:
-                        `${(count / max) * 100}%`,
-                    }}
-                  />
+                      className="w-full bg-gradient-to-t from-purple-500 to-blue-500 rounded-t-xl min-h-[10px]"
+                      style={{
+                        height: `${(count / max) * 100}%`,
+                      }}
+                    />
 
                   <p className="text-xs mt-2 text-gray-400">
 
