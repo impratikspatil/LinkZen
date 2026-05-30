@@ -1,19 +1,20 @@
-function DeviceChart() {
+function DeviceChart({ data }) {
 
-  const devices = [
-    {
-      device: "Mobile",
-      percentage: 60,
-    },
-    {
-      device: "Desktop",
-      percentage: 30,
-    },
-    {
-      device: "Tablet",
-      percentage: 10,
-    },
-  ];
+  const total =
+    Object.values(data || {})
+      .reduce((a, b) => a + b, 0);
+
+  const devices =
+    Object.entries(data || {})
+      .map(([device, count]) => ({
+        device,
+        percentage:
+          total === 0
+            ? 0
+            : Math.round(
+                (count / total) * 100
+              ),
+      }));
 
   return (
 
@@ -28,39 +29,43 @@ function DeviceChart() {
       <div className="space-y-6">
 
         {
-          devices.map((item, index) => (
+          devices.length === 0 ? (
 
-            <div key={index}>
+            <p className="text-gray-400">
 
-              <div className="flex items-center justify-between mb-2">
+              No device data available
 
-                <p className="text-gray-300">
+            </p>
 
-                  {item.device}
+          ) : (
 
-                </p>
+            devices.map((item, index) => (
 
-                <p className="text-gray-400">
+              <div key={index}>
 
-                  {item.percentage}%
+                <div className="flex justify-between mb-2">
 
-                </p>
+                  <p>{item.device}</p>
+
+                  <p>{item.percentage}%</p>
+
+                </div>
+
+                <div className="w-full h-3 bg-white/10 rounded-full">
+
+                  <div
+                    style={{
+                      width:
+                        `${item.percentage}%`
+                    }}
+                    className="h-full bg-gradient-to-r from-cyan-500 to-blue-500"
+                  />
+
+                </div>
 
               </div>
-
-              <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
-
-                <div
-                  style={{
-                    width: `${item.percentage}%`,
-                  }}
-                  className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
-                ></div>
-
-              </div>
-
-            </div>
-          ))
+            ))
+          )
         }
 
       </div>

@@ -1,70 +1,63 @@
-function BrowserChart() {
+function BrowserChart({ data }) {
 
-  const browsers = [
-    {
-      name: "Chrome",
-      value: 65,
-    },
-    {
-      name: "Safari",
-      value: 20,
-    },
-    {
-      name: "Firefox",
-      value: 10,
-    },
-    {
-      name: "Edge",
-      value: 5,
-    },
-  ];
+  const total =
+    Object.values(data || {})
+      .reduce((a, b) => a + b, 0);
+
+  const browsers =
+    Object.entries(data || {})
+      .map(([name, count]) => ({
+        name,
+        value:
+          total === 0
+            ? 0
+            : Math.round(
+                (count / total) * 100
+              ),
+      }));
 
   return (
-
     <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
 
       <h2 className="text-3xl font-bold mb-8">
-
         Browser Analytics
-
       </h2>
 
       <div className="space-y-6">
 
         {
-          browsers.map((browser, index) => (
+          browsers.length === 0 ? (
+            <p className="text-gray-400">
+              No browser data available
+            </p>
+          ) : (
+            browsers.map((browser, index) => (
 
-            <div key={index}>
+              <div key={index}>
 
-              <div className="flex items-center justify-between mb-2">
+                <div className="flex justify-between mb-2">
 
-                <p className="text-gray-300">
+                  <p>{browser.name}</p>
 
-                  {browser.name}
+                  <p>{browser.value}%</p>
 
-                </p>
+                </div>
 
-                <p className="text-gray-400">
+                <div className="w-full h-3 bg-white/10 rounded-full">
 
-                  {browser.value}%
+                  <div
+                    style={{
+                      width:
+                        `${browser.value}%`
+                    }}
+                    className="h-full bg-gradient-to-r from-purple-500 to-blue-500"
+                  />
 
-                </p>
+                </div>
 
               </div>
-
-              <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
-
-                <div
-                  style={{
-                    width: `${browser.value}%`,
-                  }}
-                  className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
-                ></div>
-
-              </div>
-
-            </div>
-          ))
+            ))
+          )
         }
 
       </div>

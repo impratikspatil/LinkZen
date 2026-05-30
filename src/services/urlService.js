@@ -152,3 +152,19 @@ export const updateExpiry = async (
 
   return data;
 };
+
+export const getAnalytics = async () => {
+
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(
+    `${API_BASE_URL}/api/v1/url/analytics`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return response.data;
+};

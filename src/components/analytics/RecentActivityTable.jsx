@@ -1,31 +1,4 @@
-function RecentActivityTable() {
-
-  const activities = [
-    {
-      browser: "Chrome",
-      device: "Desktop",
-      country: "India",
-      time: "2 mins ago",
-    },
-    {
-      browser: "Safari",
-      device: "Mobile",
-      country: "USA",
-      time: "10 mins ago",
-    },
-    {
-      browser: "Firefox",
-      device: "Desktop",
-      country: "Germany",
-      time: "25 mins ago",
-    },
-    {
-      browser: "Edge",
-      device: "Tablet",
-      country: "Canada",
-      time: "1 hour ago",
-    },
-  ];
+function RecentActivityTable({ data }) {
 
   return (
 
@@ -41,25 +14,17 @@ function RecentActivityTable() {
 
         <table className="w-full">
 
-          <thead className="border-b border-white/10">
+          <thead>
 
             <tr className="text-left text-gray-400">
 
-              <th className="pb-5">
-                Browser
-              </th>
+              <th>Browser</th>
 
-              <th className="pb-5">
-                Device
-              </th>
+              <th>Device</th>
 
-              <th className="pb-5">
-                Country
-              </th>
+              <th>OS</th>
 
-              <th className="pb-5">
-                Activity Time
-              </th>
+              <th>Clicked At</th>
 
             </tr>
 
@@ -68,39 +33,61 @@ function RecentActivityTable() {
           <tbody>
 
             {
-              activities.map(
-                (activity, index) => (
+              !data || data.length === 0 ? (
 
-                  <tr
-                    key={index}
-                    className="border-b border-white/5 hover:bg-white/[0.03] transition"
+                <tr>
+
+                  <td
+                    colSpan="4"
+                    className="py-10 text-center text-gray-400"
                   >
 
-                    <td className="py-5">
+                    No activity yet
 
-                      {activity.browser}
+                  </td>
 
-                    </td>
+                </tr>
 
-                    <td className="py-5 text-gray-400">
+              ) : (
 
-                      {activity.device}
+                data.map(
+                  (activity, index) => (
 
-                    </td>
+                    <tr
+                      key={index}
+                      className="border-b border-white/5"
+                    >
 
-                    <td className="py-5 text-gray-400">
+                      <td className="py-4">
 
-                      {activity.country}
+                        {activity.browser}
 
-                    </td>
+                      </td>
 
-                    <td className="py-5 text-gray-400">
+                      <td className="py-4">
 
-                      {activity.time}
+                        {activity.deviceType}
 
-                    </td>
+                      </td>
 
-                  </tr>
+                      <td className="py-4">
+
+                        {activity.operatingSystem}
+
+                      </td>
+
+                      <td className="py-4">
+
+                        {
+                          new Date(
+                            activity.clickedAt
+                          ).toLocaleString()
+                        }
+
+                      </td>
+
+                    </tr>
+                  )
                 )
               )
             }
