@@ -168,3 +168,24 @@ export const getAnalytics = async () => {
 
   return response.data;
 };
+
+export const getUrlAnalytics = async (
+  shortCode
+) => {
+
+  const token =
+    localStorage.getItem("token");
+
+  const response =
+    await axios.get(
+      `${API_BASE_URL}/api/v1/url/analytics/${shortCode}`,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`
+        }
+      }
+    );
+
+  return response.data;
+};

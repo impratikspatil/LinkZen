@@ -9,7 +9,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-import { getUrlStats } from "../services/urlService";
+import {getUrlAnalytics} from "../services/urlService";
 
 function UrlAnalyticsPage() {
 
@@ -28,7 +28,7 @@ function UrlAnalyticsPage() {
       try {
 
         const data =
-          await getUrlStats(shortCode);
+          await getUrlAnalytics(shortCode);
 
         setStats(data);
 

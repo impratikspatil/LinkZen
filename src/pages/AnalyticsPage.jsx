@@ -10,7 +10,10 @@ import {
 
 import Navbar from "../components/Navbar";
 
-import { getAllUrls } from "../services/urlService";
+import {
+  getAllUrls,
+  getAnalytics
+} from "../services/urlService";
 
 import AnalyticsFilters from "../components/analytics/AnalyticsFilters";
 import AnalyticsHeader from "../components/analytics/AnalyticsHeader";
@@ -24,8 +27,9 @@ import AnalyticsCard from "../components/analytics/AnalyticsCards";
 
 function AnalyticsPage() {
 
-  const [recentLinks, setRecentLinks] =
-    useState([]);
+  const [recentLinks, setRecentLinks] = useState([]);
+
+  const [analytics, setAnalytics] = useState(null);
 
   const [loading, setLoading] =
     useState(true);
@@ -42,7 +46,17 @@ function AnalyticsPage() {
 
       try {
 
-        const data = await getAllUrls();
+        const urls =
+          await getAllUrls();
+
+        const analyticsData =
+          await getAnalytics();
+
+        setRecentLinks(urls);
+
+        setAnalytics(
+          analyticsData
+        );
 
         setRecentLinks(data);
 
@@ -60,7 +74,7 @@ function AnalyticsPage() {
 
   }, []);
 
-  if (loading) {
+  if ( loading || !analytics) {
 
     return (
 
@@ -174,19 +188,34 @@ function AnalyticsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
 
-          <BrowserChart />
+          <BrowserChart
+            data={
+              analytics.browserStats
+            }
+          />
 
-          <DeviceChart />
+          <DeviceChart
+            data={
+              analytics.deviceStats
+            }
+          />
 
           <CountryChart />
 
-          <ClickChart />
+          <ClickChart
+            data={
+              analytics.weeklyClicks
+            }
+          />
 
         </div>
 
         <div className="mt-10">
 
-          <RecentActivityTable />
+          <RecentActivityTable
+              data={ analytics.recentActivities}
+
+          />
 
         </div>
 
