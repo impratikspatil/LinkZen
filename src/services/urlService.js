@@ -153,20 +153,33 @@ export const updateExpiry = async (
   return data;
 };
 
+
 export const getAnalytics = async () => {
 
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token");
 
-  const response = await axios.get(
-    `${API_BASE_URL}/api/v1/url/analytics`,
+  const response = await fetch(
+    `${BASE_URL}/analytics`,
     {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization:
+          `Bearer ${token}`,
+      },
     }
   );
 
-  return response.data;
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Failed to fetch analytics"
+    );
+  }
+
+  return data;
 };
 
 export const getUrlAnalytics = async (
@@ -176,16 +189,25 @@ export const getUrlAnalytics = async (
   const token =
     localStorage.getItem("token");
 
-  const response =
-    await axios.get(
-      `${API_BASE_URL}/api/v1/url/analytics/${shortCode}`,
-      {
-        headers: {
-          Authorization:
-            `Bearer ${token}`
-        }
-      }
-    );
+  const response = await fetch(
+    `${BASE_URL}/analytics/${shortCode}`,
+    {
+      headers: {
+        Authorization:
+          `Bearer ${token}`,
+      },
+    }
+  );
 
-  return response.data;
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Failed to fetch URL analytics"
+    );
+  }
+
+  return data;
 };

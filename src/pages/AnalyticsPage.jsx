@@ -52,12 +52,13 @@ function AnalyticsPage() {
         const analyticsData =
           await getAnalytics();
 
+        setRecentLinks(urls);
 
         setAnalytics(
           analyticsData
         );
 
-        setRecentLinks(data);
+        setRecentLinks(urls);
 
       } catch (error) {
 
