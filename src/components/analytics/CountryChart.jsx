@@ -1,23 +1,15 @@
-function CountryChart() {
+function CountryChart({ data }) {
 
-  const countries = [
-    {
-      country: "India",
-      clicks: 70,
-    },
-    {
-      country: "USA",
-      clicks: 15,
-    },
-    {
-      country: "Germany",
-      clicks: 10,
-    },
-    {
-      country: "Canada",
-      clicks: 5,
-    },
-  ];
+  const countries =
+    Object.entries(data || {});
+
+  const max =
+    Math.max(
+      ...countries.map(
+        ([, count]) => count
+      ),
+      1
+    );
 
   return (
 
@@ -32,39 +24,52 @@ function CountryChart() {
       <div className="space-y-6">
 
         {
-          countries.map((item, index) => (
+          countries.length === 0 ? (
 
-            <div key={index}>
+            <p className="text-gray-400">
 
-              <div className="flex items-center justify-between mb-2">
+              No country data available
 
-                <p className="text-gray-300">
+            </p>
 
-                  {item.country}
+          ) : (
 
-                </p>
+            countries.map(
+              ([country, count], index) => (
 
-                <p className="text-gray-400">
+                <div key={index}>
 
-                  {item.clicks}%
+                  <div className="flex items-center justify-between mb-2">
 
-                </p>
+                    <p className="text-gray-300">
 
-              </div>
+                      {country}
 
-              <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+                    </p>
 
-                <div
-                  style={{
-                    width: `${item.clicks}%`,
-                  }}
-                  className="h-full bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"
-                ></div>
+                    <p className="text-gray-400">
 
-              </div>
+                      {count}
 
-            </div>
-          ))
+                    </p>
+
+                  </div>
+
+                  <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
+
+                    <div
+                      style={{
+                        width: `${(count / max) * 100}%`,
+                      }}
+                      className="h-full bg-gradient-to-r from-pink-500 to-purple-500 rounded-full"
+                    ></div>
+
+                  </div>
+
+                </div>
+              )
+            )
+          )
         }
 
       </div>

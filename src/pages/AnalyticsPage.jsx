@@ -200,7 +200,9 @@ function AnalyticsPage() {
             }
           />
 
-          <CountryChart />
+          <CountryChart
+            data={analytics.countryStats}
+          />
 
           <ClickChart
             data={
