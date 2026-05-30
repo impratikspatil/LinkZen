@@ -52,7 +52,6 @@ function AnalyticsPage() {
         const analyticsData =
           await getAnalytics();
 
-        setRecentLinks(urls);
 
         setAnalytics(
           analyticsData
