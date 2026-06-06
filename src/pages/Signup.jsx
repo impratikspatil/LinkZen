@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Navbar from "../components/Navbar";
 
 import { signupUser } from "../services/authService";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Signup() {
 
@@ -17,6 +18,7 @@ function Signup() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = async () => {
 
@@ -116,15 +118,23 @@ function Signup() {
                 Password
               </label>
 
-              <input
-                type="password"
-                placeholder="Create password"
-                value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
-                className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Create password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 pr-12 outline-none focus:border-purple-500"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
 
             </div>
 

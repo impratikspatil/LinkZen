@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Navbar from "../components/Navbar";
 
 import { loginUser } from "../services/authService";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
 
@@ -15,6 +16,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
 
@@ -45,7 +47,9 @@ function Login() {
 
       console.error(error);
 
-      toast.error(error.message);
+      toast.error(
+        error.message || "Something went wrong"
+      );
 
     } finally {
 
@@ -101,21 +105,45 @@ function Login() {
 
             <div>
 
-              <label className="block text-sm text-gray-300 mb-2">
-                Password
-              </label>
+  <label className="block text-sm text-gray-300 mb-2">
 
-              <input
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
-                className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 outline-none focus:border-purple-500"
-              />
+    Password
 
-            </div>
+  </label>
+
+  <div className="relative">
+
+        <input
+
+          type={showPassword ? "text" : "password"}
+
+          placeholder="Enter your password"
+
+          value={password}
+
+          onChange={(e) => setPassword(e.target.value)}
+
+          className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 pr-12 outline-none focus:border-purple-500"
+
+        />
+
+        <button
+
+          type="button"
+
+          onClick={() => setShowPassword(!showPassword)}
+
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+
+        >
+
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+
+        </button>
+
+      </div>
+
+    </div>
 
             <button
               onClick={handleLogin}
