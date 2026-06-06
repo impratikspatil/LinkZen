@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Architecture from "./pages/Architecture";
 import AnalyticsPage from "./pages/AnalyticsPage.jsx";
 import UrlAnalyticsPage from "./pages/UrlAnalyticsPage";
+import ExpiredLink from "./pages/ExpiredLink";
 
 
 function App() {
@@ -52,6 +53,11 @@ function App() {
           path="/analytics/:shortCode"
           element={<UrlAnalyticsPage />}
 />
+
+          <Route
+      path="/expired-link"
+      element={<ExpiredLink />}
+    />
 
       </Routes>
 
