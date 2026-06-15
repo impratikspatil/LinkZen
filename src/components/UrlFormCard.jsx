@@ -3,7 +3,8 @@ import toast from "react-hot-toast";
 
 import { createShortUrl } from "../services/urlService";
 
-function UrlFormCard() {
+function UrlFormCard({ onSuccess }) {
+
 
   const [originalUrl, setOriginalUrl] = useState("");
 
@@ -16,6 +17,9 @@ function UrlFormCard() {
   const [loading, setLoading] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  if (onSuccess) onSuccess();
+
 
   const handleShortenUrl = async () => {
 
