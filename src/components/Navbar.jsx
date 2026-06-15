@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
 
 
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
+
 
   const isLoggedIn = !!token;
 
@@ -16,7 +19,7 @@ function Navbar() {
 
   localStorage.removeItem("token");
 
-  window.location.href = "/";
+  navigate("/");
 };
 
   return (

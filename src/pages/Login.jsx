@@ -41,7 +41,7 @@ function Login() {
         email
         );
 
-      window.location.href = "/";
+      navigate("/");
 
     } catch (error) {
 
