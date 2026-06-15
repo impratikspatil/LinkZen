@@ -10,7 +10,8 @@ import {
   Trash2,
   QrCode,
   Share2,
-  ArrowUpRight
+  ArrowUpRight,
+  Copy
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -256,14 +257,10 @@ function Dashboard() {
   </h1>
 
   <button
-    className="group flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition cursor-pointer"
-  >
-
-    <button
   onClick={() => navigate("/analytics")}
   className="group flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition cursor-pointer"
 >
-    Go To Analytics
+  Go To Analytics
 
   <ArrowUpRight
     size={18}
@@ -271,10 +268,6 @@ function Dashboard() {
   />
 
 </button>
-
-
-
-  </button>
 
 </div>
 
@@ -553,6 +546,19 @@ function Dashboard() {
                                 <QrCode size={18} />
 
                               </button>
+
+                              <button
+                                    title="Copy Short URL"
+                                    className="text-green-400 hover:text-green-300 transition cursor-pointer"
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(
+                                        `https://linkzen-backend-2.onrender.com/${link.shortCode}`
+                                      );
+                                      toast.success("Copied to clipboard!");
+                                    }}
+                                  >
+                                    <Copy size={18} />
+                                  </button>
 
                               <button
                                 className="cursor-pointer"

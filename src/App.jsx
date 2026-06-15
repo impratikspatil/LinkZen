@@ -8,6 +8,7 @@ import Architecture from "./pages/Architecture";
 import AnalyticsPage from "./pages/AnalyticsPage.jsx";
 import UrlAnalyticsPage from "./pages/UrlAnalyticsPage";
 import ExpiredLink from "./pages/ExpiredLink";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 function App() {
@@ -25,7 +26,11 @@ function App() {
 
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
         />
 
         <Route
@@ -46,18 +51,26 @@ function App() {
 
         <Route
           path="/analytics"
-          element={<AnalyticsPage />}
+          element={
+            <PrivateRoute>
+              <AnalyticsPage />
+            </PrivateRoute>
+          }
         />
 
         <Route
           path="/analytics/:shortCode"
-          element={<UrlAnalyticsPage />}
-/>
+          element={
+            <PrivateRoute>
+              <UrlAnalyticsPage />
+            </PrivateRoute>
+          }
+        />
 
-          <Route
-      path="/expired-link"
-      element={<ExpiredLink />}
-    />
+        <Route
+          path="/expired-link"
+          element={<ExpiredLink />}
+        />
 
       </Routes>
 

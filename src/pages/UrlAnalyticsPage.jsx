@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
+import Navbar from "../components/Navbar";
+
+
 import {
   MousePointerClick,
   CalendarDays,
@@ -46,6 +49,8 @@ function UrlAnalyticsPage() {
 
   }, [shortCode]);
 
+
+
   if (loading) {
 
     return (
@@ -58,9 +63,16 @@ function UrlAnalyticsPage() {
     );
   }
 
+  const isExpired =
+  stats.expiresAt !== null &&
+  stats.expiresAt !== undefined &&
+  new Date(stats.expiresAt) < new Date();
+
   return (
 
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
+
+      <Navbar />
 
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500 opacity-20 blur-3xl rounded-full"></div>
 
@@ -153,11 +165,16 @@ function UrlAnalyticsPage() {
 
             </div>
 
-            <h2 className="text-3xl font-bold text-green-400">
-
-              Active
-
+            <h2 className={`text-3xl font-bold ${isExpired ? "text-red-400" : "text-green-400"}`}>
+              {isExpired ? "Expired" : "Active"}
             </h2>
+
+            {stats.expiresAt && (
+              <p className="text-gray-500 text-sm mt-2">
+                {isExpired ? "Expired on " : "Expires on "}
+                {new Date(stats.expiresAt).toLocaleDateString()}
+              </p>
+            )}
 
           </div>
 
