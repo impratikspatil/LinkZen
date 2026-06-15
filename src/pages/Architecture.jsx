@@ -231,7 +231,7 @@ function Architecture() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
-                title: "Backend", tags: ["Java 17", "Spring Boot 3", "Spring Security", "JWT (jjwt 0.11)", "Spring Data MongoDB", "Redis", "ZXing QR", "Lombok", "Maven"],
+                title: "Backend", tags: ["Java 17", "Spring Boot 3", "Spring Security", "JWT (jjwt 0.11)", "Spring Data MongoDB", "Redis", "ZXing QR", "Lombok", "Maven", "Springdoc OpenAPI 2.8", "Rate Limiting (Redis)"],
                 color: "text-purple-300 bg-purple-500/10 border-purple-500/20"
               },
               {
@@ -273,6 +273,25 @@ function Architecture() {
                 <p className="text-gray-400 text-sm mb-2">{item.title}</p>
                 <p className="font-bold text-white text-lg mb-2">{item.value}</p>
                 <p className="text-gray-500 text-sm">{item.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Additional Features */}
+        <div className="bg-white/5 border border-white/10 rounded-3xl p-10 mb-10">
+          <h2 className="text-3xl font-bold mb-8">Additional Features</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { title: "Rate Limiting", desc: "100 requests per IP per minute using Redis TTL counter. Returns 429 Too Many Requests when exceeded. Swagger and redirect endpoints excluded.", color: "border-red-500/30" },
+              { title: "Swagger / OpenAPI", desc: "Full API documentation at /swagger-ui/index.html. JWT Bearer auth integrated — test all secured endpoints directly from browser.", color: "border-blue-500/30" },
+              { title: "QR Code Generation", desc: "ZXing library generates 300x300 PNG QR codes for any short URL. Shareable via Web Share API directly from dashboard.", color: "border-purple-500/30" },
+              { title: "IP Geolocation", desc: "Country detected per click via ip-api.com. Stored in UrlClick collection and shown in Country Traffic analytics chart.", color: "border-green-500/30" },
+            ].map((item) => (
+              <div key={item.title} className={`bg-black/20 border ${item.color} rounded-2xl p-6`}>
+                <p className="font-semibold text-white mb-2">{item.title}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
