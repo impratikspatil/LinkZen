@@ -42,42 +42,43 @@ function Navbar() {
           Architecture
         </Link>
 
-        {
+        {isLoggedIn ? (
+  <>
+    <Link
+      to="/dashboard"
+      className="text-gray-300 hover:text-white transition"
+    >
+      Dashboard
+    </Link>
 
-          isLoggedIn ? (
+    <Link
+      to="/analytics"
+      className="text-gray-300 hover:text-white transition"
+    >
+      Analytics
+    </Link>
 
-            <>
-             <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center font-bold">
-              {userEmail.charAt(0).toUpperCase()}
-            </div>
+    <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center font-bold">
+      {userEmail.charAt(0).toUpperCase()}
+    </div>
 
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
-              >
-                Logout
-              </button>
-            </>
-
-          ) : (
-
-            <>
-              <Link
-                to="/login"
-                className="text-gray-300 hover:text-white transition"
-              >
-                Login
-              </Link>
-
-              <Link
-                to="/signup"
-                className="bg-gradient-to-r from-purple-500 to-blue-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
-              >
-                Signup
-              </Link>
-            </>
-          )
-        }
+    <button
+      onClick={handleLogout}
+      className="bg-red-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <Link to="/login" className="text-gray-300 hover:text-white transition">
+      Login
+    </Link>
+    <Link to="/signup" className="bg-gradient-to-r from-purple-500 to-blue-500 px-5 py-2 rounded-xl font-semibold hover:opacity-90 transition">
+      Signup
+    </Link>
+  </>
+)}
 
       </div>
 
